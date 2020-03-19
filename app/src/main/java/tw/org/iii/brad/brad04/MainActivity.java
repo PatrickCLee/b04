@@ -46,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
                 data.putCharSequence("data",name + "i = " + i);
                 message.setData(data);
                 uiHandler.sendMessage(message);
+                //sendMessage參數要帶message物件,故上方要先有m物件，而message的setData要帶Bundle物件,故
+                //由Bundle帶真正要傳的訊息
+
+                //也可想像Message為一個物件,帶有what及arg1,arg2屬性,但此處不理會
+                //在Message裡包一個Bundle,由Bundle去setData,然後Handler將Message送出去
+
 
                 //uiHandler.sendEmptyMessage(0);//what代表what happened, 狀態訊息
 
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             //Log.v("brad","OK");
-            CharSequence data = msg.getData().getCharSequence("data","no data");
+            CharSequence data = msg.getData().getCharSequence("data","no data");//msg是傳遞的Message物件,getData拆解封包回傳Bundle,getCharSequence
             if (msg.what ==1) {
                 tv2.setText(data);
             }else{
@@ -82,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             Log.v("brad","i = " + i++);
             Message message = new Message();
-            message.what = 1;
+            message.what = 1;           //what是Message的屬性,故可用為辨別為哪個Message
             Bundle data = new Bundle();
             data.putCharSequence("data", "i = " + i);
             message.setData(data);
